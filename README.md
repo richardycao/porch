@@ -1,2 +1,2 @@
 # porch
-implementation of deep learning concepts
+pip install --upgrade git+https://github.com/richardycao/porch.git#egg=porch
