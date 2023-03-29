@@ -8,3 +8,8 @@ example:
 from porch import hello
 hello.print_hello_world()
 ```
+
+```
+import porch
+porch.hello.print_hello_world()
+```
