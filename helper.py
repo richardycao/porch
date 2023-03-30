@@ -1,10 +1,20 @@
 import torch
 
-def rand(*args):
-    return torch.rand(*args)
+def cat(*args, **kwargs):
+    return torch.cat(*args, **kwargs)
 
-def normal(*args):
-    return torch.normal(*args)
+def empty(*args, **kwargs):
+    return torch.empty(*args, **kwargs)
 
-def matmul(*args):
-    return torch.matmul(*args)
+def flatten(*args, **kwargs):
+    return torch.flatten(*args, **kwargs)
+
+def matmul(*args, **kwargs):
+    return torch.matmul(*args, **kwargs)
+
+def normal(*args, **kwargs):
+    return torch.normal(*args, **kwargs)
+
+def rand(*args, **kwargs):
+    return torch.rand(*args, **kwargs)
+

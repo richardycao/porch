@@ -1,16 +1,16 @@
 from .module import Module
+from .functional.function import cross_entropy, mse
 
 class MSELoss(Module):
     def __init__(self):
         super().__init__()
 
     def forward(self, y_hat, y):
-        l = (y_hat - y) ** 2 /2
-        return l.mean()
+        return mse(y_hat, y).mean()
 
-# class CrossEntropyLoss(nn.Module):
-#     def __init__(self):
-#         super().__init__()
+class CrossEntropyLoss(Module):
+    def __init__(self):
+        super().__init__()
 
-#     def forward(self, y_hat, y):
-#         return 
+    def forward(self, y_hat, y):
+        return cross_entropy(y_hat, y).mean()

@@ -1,15 +1,15 @@
-import torch
 from torch import nn
 from .module import Module
 import math
+from ..helper import empty, flatten, matmul
 
 class Linear(Module):
     def __init__(self, in_features: int, out_features: int, bias=True):
         super().__init__()
 
-        self.weight = nn.Parameter(torch.empty((out_features, in_features)))
+        self.weight = nn.Parameter(empty((out_features, in_features)))
         if bias:
-            self.bias = nn.Parameter(torch.empty(out_features))
+            self.bias = nn.Parameter(empty(out_features))
         else:
             self.register_parameter('bias', None)
 
@@ -20,5 +20,14 @@ class Linear(Module):
             nn.init.uniform_(self.bias, -bound, bound)
     
     def forward(self, x):
-        return torch.matmul(x, self.weight.T) + self.bias
+        return matmul(x, self.weight.T) + self.bias
+    
+class Flatten(Module):
+    def __init__(self, start_dim: int = 1, end_dim: int = -1) -> None:
+        super().__init__()
+        self.start_dim = start_dim
+        self.end_dim = end_dim
+
+    def forward(self, x):
+        return flatten(x)
     
