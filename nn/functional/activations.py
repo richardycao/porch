@@ -1,4 +1,4 @@
-import numpy as np
+import torch.nn.functional as F
 
 def relu(x):
-    return np.maximum(x, 0)
+    return F.relu(x)
