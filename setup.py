@@ -6,5 +6,5 @@ setup(name='porch',
     author_email='richardycao@gmail.com',
     url='https://github.com/richardycao/porch.git',
     packages=find_packages(),
-    install_requires=['numpy','torch']
+    install_requires=['numpy']
 )

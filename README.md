@@ -1,15 +1,7 @@
 # porch
-pip install --upgrade git+https://github.com/richardycao/porch.git#egg=porch
 
-pip uninstall -y porch
+Practice implementations of deep learning concepts.
 
-example:
-```
-from porch import hello
-hello.print_hello_world()
-```
+Install: `pip install --upgrade git+https://github.com/richardycao/porch.git#egg=porch`
 
-```
-import porch
-porch.hello.print_hello_world()
-```
+Uninstall: `pip uninstall -y porch`
