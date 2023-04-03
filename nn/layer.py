@@ -1,7 +1,7 @@
 from torch import nn
 from .module import Module
 import math
-from ..helper import empty, flatten, matmul
+from ..helper import empty, flatten, matmul, rand
 
 class Linear(Module):
     def __init__(self, in_features: int, out_features: int, bias=True):
@@ -22,6 +22,15 @@ class Linear(Module):
     def forward(self, x):
         return matmul(x, self.weight.T) + self.bias
     
+class Dropout(Module):
+    def __init__(self, p):
+        super().__init__()
+        self.p = p
+
+    def forward(self, x):
+        mask = (rand(x.shape) > self.p).float()
+        return (mask * x) / (1 - self.p)
+    
 class Flatten(Module):
     def __init__(self, start_dim: int = 1, end_dim: int = -1) -> None:
         super().__init__()
@@ -29,5 +38,5 @@ class Flatten(Module):
         self.end_dim = end_dim
 
     def forward(self, x):
-        return flatten(x)
+        return flatten(x, start_dim=self.start_dim, end_dim=self.end_dim)
     
