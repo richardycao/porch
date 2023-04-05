@@ -12,8 +12,14 @@ def exp(*args, **kwargs):
 def flatten(*args, **kwargs):
     return torch.flatten(*args, **kwargs)
 
+def log(*args, **kwargs):
+    return torch.log(*args, **kwargs)
+
 def matmul(*args, **kwargs):
     return torch.matmul(*args, **kwargs)
+
+def max(*args, **kwargs):
+    return torch.max(*args, **kwargs)
 
 def maximum(*args, **kwargs):
     return torch.maximum(*args, **kwargs)
@@ -32,6 +38,9 @@ def rand(*args, **kwargs):
 
 def reshape(*args, **kwargs):
     return torch.reshape(*args, **kwargs)
+
+def squeeze(*args, **kwargs):
+    return torch.squeeze(*args, **kwargs)
 
 def tensor(*args, **kwargs):
     return torch.tensor(*args, **kwargs)
