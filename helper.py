@@ -12,6 +12,9 @@ def exp(*args, **kwargs):
 def flatten(*args, **kwargs):
     return torch.flatten(*args, **kwargs)
 
+def is_grad_enabled(*args, **kwargs):
+    return torch.is_grad_enabled(*args, **kwargs)
+
 def log(*args, **kwargs):
     return torch.log(*args, **kwargs)
 
@@ -39,8 +42,14 @@ def rand(*args, **kwargs):
 def reshape(*args, **kwargs):
     return torch.reshape(*args, **kwargs)
 
+def sqrt(*args, **kwargs):
+    return torch.sqrt(*args, **kwargs)
+
 def squeeze(*args, **kwargs):
     return torch.squeeze(*args, **kwargs)
+
+def std(*args, **kwargs):
+    return torch.std(*args, **kwargs)
 
 def tensor(*args, **kwargs):
     return torch.tensor(*args, **kwargs)

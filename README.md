@@ -1,6 +1,6 @@
 # porch
 
-Practice implementations of deep learning concepts. I'm stopping after implementing convolutional layers because training becomes too slow.
+Practice implementations of deep learning concepts.
 
 Install: `pip install --upgrade git+https://github.com/richardycao/porch.git#egg=porch`
 
@@ -9,11 +9,15 @@ Uninstall: `pip uninstall -y porch`
 Custom implementations:
 - porch.nn
     - (Layers)
+        - BatchNorm1d
+        - BatchNorm2d
         - Conv2d
         - Dropout
         - Flatten
         - Linear
         - MaxPool2d
+        - Sequential
+        - ReLU
     - (Losses)
         - MSE
         - CrossEntropyLoss

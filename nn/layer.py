@@ -1,7 +1,8 @@
 from torch import nn
 from .module import Module
 import math
-from ..helper import empty, flatten, matmul, mul, max, rand, unsqueeze
+from .functional import relu
+from ..helper import empty, flatten, is_grad_enabled, matmul, mul, max, ones, rand, sqrt, std, unsqueeze
 
 def to_tuple(x, name):
     if isinstance(x, int):
@@ -10,6 +11,55 @@ def to_tuple(x, name):
         return x
     else:
         raise Exception(f"{name} must be int or tuple of length 2")
+
+
+
+class BatchNorm1d(Module):
+    def __init__(self, num_features, eps=1e-5, momentum=0.1):
+        super().__init__()
+        self.gamma = nn.Parameter(ones((1,num_features)))
+        self.beta = nn.Parameter(empty((1,num_features)))
+        
+        self.moving_mean = ones((1,num_features))
+        self.moving_var = empty((1,num_features))
+
+        self.eps = eps
+        self.momentum = momentum
+
+    def forward(self, x):
+        if not is_grad_enabled(): # test
+            x_hat = (x - self.moving_mean) / sqrt(self.moving_var + self.eps)
+        else: # train
+            mean = x.mean(0)
+            var = ((x - mean) ** 2).mean(0)
+            x_hat = (x - mean) / sqrt(var + self.eps)
+            self.moving_mean = (1.0 - self.momentum) * self.moving_mean + self.momentum * mean
+            self.moving_var = (1.0 - self.momentum) * self.moving_var + self.momentum * var
+        return self.gamma * x_hat + self.beta
+
+class BatchNorm2d(Module):
+    def __init__(self, num_features, eps=1e-5, momentum=0.1):
+        super().__init__()
+
+        self.gamma = nn.Parameter(ones((1,num_features,1,1)))
+        self.beta = nn.Parameter(empty((1,num_features,1,1)))
+
+        self.moving_mean = ones((1,num_features,1,1))
+        self.moving_var = empty((1,num_features,1,1))
+
+        self.eps = eps
+        self.momentum = momentum
+    
+    def forward(self, x):
+        if not is_grad_enabled(): # test
+            x_hat = (x - self.moving_mean) / sqrt(self.moving_var + self.eps)
+        else: # train
+            mean = x.mean((0,2,3), keepdim=True)
+            var = ((x - mean) ** 2).mean((0,2,3), keepdim=True)
+            x_hat = (x - mean) / sqrt(var + self.eps)
+            self.moving_mean = (1.0 - self.momentum) * self.moving_mean + self.momentum * mean
+            self.moving_var = (1.0 - self.momentum) * self.moving_var + self.momentum * var
+        return self.gamma * x_hat + self.beta
 
 class Conv2d(Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, bias=True):
@@ -112,3 +162,20 @@ class MaxPool2d(Module):
                     start_dim=2
                 ), 2).values
         return y
+    
+class Sequential(Module):
+    def __init__(self, *modules):
+        super().__init__()
+        self.modules = [*modules]
+    
+    def forward(self, x):
+        for module in self.modules:
+            x = module(x)
+        return x
+    
+class ReLU(Module):
+    def __init__(self):
+        super().__init__()
+    
+    def forward(self, x):
+        return relu(x)
