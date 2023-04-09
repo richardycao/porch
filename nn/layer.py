@@ -133,6 +133,13 @@ class Linear(Module):
     
     def forward(self, x):
         return matmul(x, self.weight.T) + self.bias
+    
+class _LSTMLayer(Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x):
+        return x
 
 class MaxPool2d(Module):
     def __init__(self, kernel_size, stride=1, padding=0):

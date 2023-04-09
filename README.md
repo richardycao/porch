@@ -16,8 +16,9 @@ Custom implementations:
         - Flatten
         - Linear
         - MaxPool2d
-        - Sequential
         - ReLU
+        - RNN
+        - Sequential
     - (Losses)
         - MSE
         - CrossEntropyLoss
