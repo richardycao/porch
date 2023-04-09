@@ -1,8 +1,8 @@
 from torch import nn
 from .module import Module
 import math
-from .functional import relu
-from ..helper import empty, flatten, is_grad_enabled, matmul, mul, max, ones, rand, sqrt, std, unsqueeze
+from .functional import relu, tanh
+from ..helper import *
 
 def to_tuple(x, name):
     if isinstance(x, int):
@@ -11,8 +11,6 @@ def to_tuple(x, name):
         return x
     else:
         raise Exception(f"{name} must be int or tuple of length 2")
-
-
 
 class BatchNorm1d(Module):
     def __init__(self, num_features, eps=1e-5, momentum=0.1):
@@ -163,6 +161,40 @@ class MaxPool2d(Module):
                 ), 2).values
         return y
     
+class ReLU(Module):
+    def __init__(self):
+        super().__init__()
+    
+    def forward(self, x):
+        return relu(x)
+
+class _RNNLayer(Module):
+    def __init__(self, input_size, hidden_size):
+        super().__init__()
+        self.state = Linear(input_size + hidden_size, hidden_size)
+        self.hidden_size = hidden_size
+
+    def forward(self, x):
+        outputs = []
+        h = empty((x.shape[1], self.hidden_size))
+        for i in range(x.shape[0]):
+            h = cat([x[i], h], 1)
+            h = tanh(self.state(h))
+            outputs.append(h)
+        return stack(outputs, 0), h
+        
+class RNN(Module):
+    def __init__(self, input_size, hidden_size, num_layers):
+        super().__init__()
+        self.rnn_layers = [_RNNLayer(input_size if i==0 else hidden_size, hidden_size) for i in range(num_layers)]
+        
+    def forward(self, x):
+        hiddens = []
+        for rnn_layer in self.rnn_layers:
+            x, h = rnn_layer(x)
+            hiddens.append(h)
+        return x, stack(hiddens, 0)
+    
 class Sequential(Module):
     def __init__(self, *modules):
         super().__init__()
@@ -172,10 +204,3 @@ class Sequential(Module):
         for module in self.modules:
             x = module(x)
         return x
-    
-class ReLU(Module):
-    def __init__(self):
-        super().__init__()
-    
-    def forward(self, x):
-        return relu(x)

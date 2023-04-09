@@ -42,6 +42,9 @@ def rand(*args, **kwargs):
 def reshape(*args, **kwargs):
     return torch.reshape(*args, **kwargs)
 
+def stack(*args, **kwargs):
+    return torch.stack(*args, **kwargs)
+
 def sqrt(*args, **kwargs):
     return torch.sqrt(*args, **kwargs)
 

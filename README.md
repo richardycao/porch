@@ -1,6 +1,6 @@
 # porch
 
-Practice implementations of deep learning concepts.
+Practice implementations of deep learning concepts. Don't use this for serious deep learning since it is very slow.
 
 Install: `pip install --upgrade git+https://github.com/richardycao/porch.git#egg=porch`
 
